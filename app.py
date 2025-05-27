@@ -9,6 +9,7 @@ model = tf.keras.models.load_model("model_fgsm.h5") # Ensure the model is in eva
 
 class_names = ["airplane", "automobile", "bird", "cat", "deer",
                "dog", "frog", "horse", "ship", "truck"]
+class_to_index = {name: idx for idx, name in enumerate(class_names)}  # Map class names to indices
 
 def preprocess_image(img_bytes): 
     img = Image.open(io.BytesIO(img_bytes)).resize((32, 32)) # Resize to match model input size
@@ -20,7 +21,7 @@ def fgsm_attack(model, image, label, epsilon=0.01):
         tape.watch(image) # Watch the input image for gradients
         prediction = model(image) # Get model prediction
         loss = tf.keras.losses.categorical_crossentropy(label, prediction) # Compute loss
-    gradient = tape.gradient(loss, image) 
+    gradient = tape.gradient(loss, image) # Compute the gradient of the loss with respect to the input image
     signed_grad = tf.sign(gradient)
     adv_image = image + epsilon * signed_grad
     return tf.clip_by_value(adv_image, 0, 1)
@@ -31,10 +32,16 @@ def predict():
     image = preprocess_image(file.read()) # Preprocess the image
 
     is_adv = request.args.get("adversarial", "false") == "true" # Check if adversarial attack is requested
+    true_label = request.args.get("true_label", "airplane").lower()  # <-- always set
+
+    if true_label not in class_to_index:
+        return jsonify({"error": f"Invalid label: {true_label}. Must be one of {list(class_to_index.keys())}."}), 400
+
+    label_idx = class_to_index[true_label]
+    label = tf.one_hot([label_idx], depth=10)
+
     if is_adv:
-        label_idx = int(request.args.get("true_label", "0"))
-        label = tf.one_hot([label_idx], depth=10)
-        image = fgsm_attack(model, image, label)
+        image = fgsm_attack(model, image, label) # Apply FGSM attack if requested
 
     pred = model.predict(image)[0]
     label = class_names[int(np.argmax(pred))]
