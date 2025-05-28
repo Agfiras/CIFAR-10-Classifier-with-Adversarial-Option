@@ -6,7 +6,7 @@ This project demonstrates how to build and evaluate a Convolutional Neural Netwo
 
 Deployed live using **Hugging Face Spaces + Streamlit** 🚀
 
-🔗 **[Try the Live Demo]([https://huggingface.co/spaces YOUR_USERNAME/cifar10-fgsm](https://huggingface.co/spaces/3llisa/CIFAR-10-Classifier-with-Adversarial-Option))**
+🔗 **[Try the Live Demo](https://huggingface.co/spaces/3llisa/CIFAR-10-Classifier-with-Adversarial-Option)**
 ---
 ## 📚 Overview
 ### 🎯 Objectives
