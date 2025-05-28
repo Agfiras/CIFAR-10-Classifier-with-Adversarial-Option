@@ -1,96 +1,120 @@
-project:
-  title: "CIFAR-10 Adversarial Training with FGSM"
-  description: >
-    This project demonstrates the training and evaluation of a CNN on the CIFAR-10 dataset,
-    including adversarial training using FGSM to improve model robustness.
 
-features:
-  - CNN trained on CIFAR-10 dataset
-  - Evaluation on clean and noisy inputs (Gaussian, salt-and-pepper, speckle)
-  - FGSM adversarial attack implementation
-  - Adversarial training (clean + FGSM examples)
-  - Flask API for model predictions
-  - Streamlit GUI for end-user interaction
-  - Accepts class names (e.g., "cat") instead of numeric labels
+---
+# 🧠 CIFAR-10 Adversarial Training with FGSM
 
-classes:
-  - airplane
-  - automobile
-  - bird
-  - cat
-  - deer
-  - dog
-  - frog
-  - horse
-  - ship
-  - truck
+This project demonstrates how to build and evaluate a Convolutional Neural Network (CNN) trained on the CIFAR-10 dataset, with improved robustness through **FGSM (Fast Gradient Sign Method)** adversarial training.
 
-quickstart:
-  steps:
-    - step: "Clone the Repository"
-      command: |
-        git clone https://github.com/YOUR_USERNAME/cifar10-adversarial-training.git
-        cd cifar10-adversarial-training
+Deployed live using **Hugging Face Spaces + Streamlit** 🚀
 
-    - step: "Install Dependencies"
-      command: pip install -r requirements.txt
+🔗 **[Try the Live Demo](https://huggingface.co/spaces YOUR_USERNAME/cifar10-fgsm)**
+---
+## 📚 Overview
+### 🎯 Objectives
 
-    - step: "Export the Model from Colab"
-      code: |
-        model.save("model_fgsm.h5")
-        from google.colab import files
-        files.download("model_fgsm.h5")
-      notes: "Move model_fgsm.h5 into the project directory"
+- Train a CNN model on CIFAR-10
+- Evaluate robustness under both natural and adversarial perturbations
+- Implement **adversarial training** using FGSM-generated examples
+- Provide an interactive demo via **Streamlit** on Hugging Face Spaces
 
-    - step: "Run the Flask API"
-      command: python app.py
-      output: "http://127.0.0.1:5000/predict"
+---
 
-    - step: "Run the Streamlit GUI (Optional)"
-      command: streamlit run gui_app.py
+## 🗂️ Project Structure
 
-api_example:
-  description: "Send an image and get prediction"
-  method: POST
-  endpoint: "/predict?adversarial=true&true_label=cat"
-  curl: curl -X POST -F image=@cat.png "http://localhost:5000/predict?adversarial=true&true_label=cat"
-  response_example:
-    prediction: dog
-    confidence: 0.85
+```
+cifar10-adversarial-training/
+├── Project.ipynb            # Colab notebook for training
+├── model_fgsm.h5            # Trained model exported from Colab
+├── app.py                   # Streamlit app for Hugging Face Spaces
+├── requirements.txt         # Dependencies for deployment
+├── README.md                # Project documentation
+└── images/                  # Visual results (optional)
+```
 
-structure:
-  - Project.ipynb: "Training notebook (run in Colab)"
-  - model_fgsm.h5: "Trained model"
-  - app.py: "Flask API backend"
-  - gui_app.py: "Streamlit frontend"
-  - requirements.txt: "Python dependencies"
-  - README.md: "Project documentation"
-  - images/: "Visualization outputs"
+---
 
-results:
-  clean_accuracy: "~70–80%"
-  noise_accuracy: "Decreases with Gaussian/S&P/Speckle"
-  fgsm_accuracy: "~19.5% before FGSM training; improves after"
-  notes: "FGSM helps, but PGD offers stronger robustness"
+## 🚀 How to Use Locally
 
-future_work:
-  - Use PGD or BIM for stronger adversarial defense
-  - Evaluate on corrupted datasets (CIFAR-10-C)
-  - Train with deeper architectures (e.g., ResNet, WideResNet)
-  - Deploy online with Docker + Render or Hugging Face Spaces
+### 1. Clone the repository
 
-references:
-  - title: "Explaining and Harnessing Adversarial Examples"
-    author: "Goodfellow et al."
-    link: "https://arxiv.org/abs/1412.6572"
+```bash
+git clone https://github.com/Agfiras/CIFAR-10-Classifier-with-Adversarial-Option.git
+cd cifar10-adversarial-training
+```
 
-  - title: "TensorFlow FGSM Tutorial"
-    link: "https://www.tensorflow.org/tutorials/generative/adversarial_fgsm"
+### 2. Install required packages
 
-  - title: "CIFAR-10 Dataset"
-    link: "https://www.cs.toronto.edu/~kriz/cifar.html"
+```bash
+pip install -r requirements.txt
+```
 
-author:
-  name: "Firas Ajengui"
-  linkedin: "https://www.linkedin.com"
-  github: "https://github.com/YOUR_USERNAME"
+### 3. Run Streamlit app locally
+
+```bash
+streamlit run app.py
+```
+
+---
+
+## 📦 Deploying to Hugging Face Spaces
+
+1. Go to [Hugging Face Spaces](https://huggingface.co/spaces)
+2. Create a new Space → choose **Streamlit**
+3. Upload these files:
+   - `app.py`
+   - `model_fgsm.h5`
+   - `requirements.txt`
+4. Commit and deploy
+
+> The model file must be under 5GB. If larger, compress or quantize.
+
+---
+
+## 🔐 FGSM Adversarial Attack
+
+FGSM perturbs an input image in the direction of greatest model error:
+
+\[
+x_{\text{adv}} = x + \epsilon \cdot \text{sign}(\nabla_x J(\theta, x, y))
+\]
+
+This creates adversarial samples that:
+- Look similar to humans 👀
+- Fool the model with high confidence 🤖
+
+---
+
+## 🧠 CIFAR-10 Class Labels
+
+```
+airplane, automobile, bird, cat, deer,
+dog, frog, horse, ship, truck
+```
+
+These class names are used in the app when applying FGSM attacks.
+
+---
+
+## 📊 Features in the Demo
+
+- Upload a CIFAR-10 image (or any 32×32 RGB image)
+- Toggle FGSM attack on/off
+- Choose the true label (required for adversarial generation)
+- View model prediction and confidence
+
+---
+
+## 📌 Future Improvements
+
+- Add PGD (multi-step adversarial attack)
+- Deploy as a Gradio or web API
+- Extend to CIFAR-100 or TinyImageNet
+- Add adversarial detection or confidence-based rejection
+
+---
+
+## 👤 Author
+
+**Firas Ajengui**  
+University of Szeged  
+Master’s Student in Computer Science  
+Trained on Google Colab, deployed with Streamlit on Hugging Face Spaces
