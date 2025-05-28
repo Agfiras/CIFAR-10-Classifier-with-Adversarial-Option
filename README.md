@@ -71,11 +71,7 @@ streamlit run app.py
 
 ## 🔐 FGSM Adversarial Attack
 
-FGSM perturbs an input image in the direction of greatest model error:
-
-\[
-x_{\text{adv}} = x + \epsilon \cdot \text{sign}(\nabla_x J(\theta, x, y))
-\]
+FGSM perturbs an input image in the direction of greatest model error
 
 This creates adversarial samples that:
 - Look similar to humans 👀
@@ -117,4 +113,4 @@ These class names are used in the app when applying FGSM attacks.
 **Firas Ajengui**  
 University of Szeged  
 Master’s Student in Computer Science  
-Trained on Google Colab, deployed with Streamlit on Hugging Face Spaces
+Trained on Google Colab, deployed with Streamlit on Hugging Face Spaces, and flask API on render.com
