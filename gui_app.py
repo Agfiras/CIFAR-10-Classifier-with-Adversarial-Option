@@ -27,7 +27,7 @@ if uploaded_file and st.button("Predict"):
     files = {"image": uploaded_file.getvalue()}
 
     # 🔗 UPDATE this with your Flask API URL
-    base_url = "https://your-flask-api.onrender.com/predict"
+    base_url = "https://cifar-10-classifier-with-adversarial.onrender.com/predict"
     params = {
         "adversarial": str(attack).lower(),
         "true_label": true_label.lower()

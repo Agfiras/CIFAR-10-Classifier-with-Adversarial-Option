@@ -17,6 +17,10 @@ def preprocess_image(img_bytes):
     return np.expand_dims(img, axis=0)
 
 def fgsm_attack(model, image, label, epsilon=0.01):
+
+    image = tf.convert_to_tensor(image)
+    label = tf.convert_to_tensor(label)
+
     with tf.GradientTape() as tape:
         tape.watch(image)
         prediction = model(image)
