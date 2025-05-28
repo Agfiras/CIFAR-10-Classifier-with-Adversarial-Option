@@ -2,3 +2,4 @@ tensorflow
 flask
 Pillow
 numpy
+flask-cors
